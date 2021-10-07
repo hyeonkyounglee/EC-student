@@ -39,6 +39,16 @@ MCU:  				STM32F411RE, Nucleo-64
 #define AF     0x02
 #define ANALOG 0x03
 
+#define NO_PUPD 0x00
+#define PU		0x01
+#define PD      0x02
+#define RESRV 	0x03
+
+#define LS		0x00
+#define MS		0x01
+#define FS      0x02
+#define HS 		0x03
+
 #define HIGH 1
 #define LOW  0
 
@@ -52,7 +62,7 @@ int  GPIO_read(GPIO_TypeDef *Port, int pin);
 void GPIO_mode(GPIO_TypeDef* Port, int pin, int mode);
 void GPIO_ospeed(GPIO_TypeDef* Port, int pin, int speed);
 void GPIO_otype(GPIO_TypeDef* Port, int pin, int type);
-void GPIO_pupdr(GPIO_TypeDef* Port, int pin, int pudr);
+void GPIO_pudr(GPIO_TypeDef* Port, int pin, int pudr);
 
 #endif
 
@@ -114,12 +124,12 @@ GPIO_mode(GPIOA, 5, OUTPUT);
 
 
 
-### GPIO_pupdr\(\)
+### GPIO_pudr\(\)
 
-Configures  GPIO pin modes: In/Out/AF/Analog
+Configure Pull-up/down register
 
 ```c++
-void GPIO_pupdr(GPIO_TypeDef *Port, int pin, int pupdr);
+void GPIO_pupdr(GPIO_TypeDef *Port, int pin, int pudr);
 ```
 
 **Parameters**
@@ -128,39 +138,114 @@ void GPIO_pupdr(GPIO_TypeDef *Port, int pin, int pupdr);
 
 * **pin**:  pin number (int) 0~15
 
-* **pupdr**:   No Pullup Pulldown (0), Pull-Up (1),  Pull-Down(2),...
+* **pudr**:   NO_PUPD (0), PU (1),  PD (2), RESRV (3)
 
   
 
 **Example code**
 
 ```c++
-GPIO_pupdr(GPIOA, 5, 0); // 0: No PUPD
+GPIO_pudr(GPIOA, 5, NO_PUPD); // 0: No PUPD
 ```
 
-The header file is `ecGPIO.h`
+
+
+### GPIO_otype(\)
+
+Configure Output Type (OTYPE): Open-drain / Push-Pull
+
+```c++
+void GPIO_otype(GPIO_TypeDef *Port, int pin, int type);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+
+* **pin**:  pin number (int) 0~15
+
+* **type**:   Output push-pull (reset state) (0), Open-drain (1)
+
+  
+
+**Example code**
+
+```c++
+GPIO_otype(GPIOA, 5, 0); // 0: Reset state
+```
+
+
+
+### GPIO_ospeed(\)
+
+Configure Speed (OSPEED): Low / Medium / Fast / High 
+
+```c++
+void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int speed);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+
+* **pin**:  pin number (int) 0~15
+
+* **speed**:   LS (0), MS (1), FS (2), HS (3) 
+
+  
+
+**Example code**
+
+```c++
+GPIO_ospeed(GPIOA, 5, MS); // 1: Medium speed
+```
+
+
+
+### GPIO_read(\)
+
+Read data
+
+```c++
+int  GPIO_read(GPIO_TypeDef *Port, int pin);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+* **pin**:  pin number (int) 0~15
+
+
+
+### GPIO_write(\)
+
+Output data from data register : H or L
+
+```c++
+void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int Output);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+
+* **pin**:  pin number (int) 0~15
+
+* **speed**: LOW (0), HIGH (1)
+
+  
+
+**Example code**
+
+```c++
+while(1){
+	if(GPIO_read(GPIOC, BUTTON_PIN) == 0)	GPIO_write(GPIOA, LED_PIN, HIGH);
+	else 				  				    GPIO_write(GPIOA, LED_PIN, LOW);
+	}
+```
 
 
 
 ------
 
 
-
-## Class or Header name
-
-### Function Name
-
-```text
-
-```
-
-**Parameters**
-
-* p1
-* p2
-
-**Example code**
-
-```text
-
-```
