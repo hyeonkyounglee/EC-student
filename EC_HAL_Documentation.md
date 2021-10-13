@@ -246,6 +246,58 @@ while(1){
 
 
 
-------
+### sevensegment_init()
 
+Initialization segment register setting: mode, type, pull up/pull down, speed
+
+```c++
+void sevensegment_init();
+```
+
+
+
+**Example code**
+
+```c++
+void setup(void)
+{
+    RCC_HSI_init();      
+    GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls RCC_GPIOC_enable()   
+		GPIO_pudr(GPIOC, BUTTON_PIN, PULLUP); 
+		sevensegment_init();
+}
+```
+
+
+
+### sevensegment_decode()
+
+Configuration the number that appear on the 7-segment
+
+```c++
+void sevensegment_decode(uint8_t num);
+```
+
+**Parameters**
+
+* **num:**  the number that appears on the 7-segment
+
+
+
+**Example code**
+
+```c++
+while(1){      
+	if(GPIO_read(GPIOC, BUTTON_PIN) && tempVar){
+		cnt++;
+		if (cnt > 9) cnt = 0; 
+		tempVar=false;
+	}
+	else if(GPIO_read(GPIOC, BUTTON_PIN) == 0){
+		for(int i = 0; i < 500000;i++){} 
+		tempVar=true;
+	}						 
+	sevensegment_decode(cnt % 10); 
+}
+```
 
