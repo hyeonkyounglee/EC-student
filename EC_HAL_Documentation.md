@@ -246,6 +246,8 @@ while(1){
 
 
 
+## 7-segment control
+
 ### sevensegment_init()
 
 Initialization segment register setting: mode, type, pull up/pull down, speed
@@ -298,6 +300,219 @@ while(1){
 		tempVar=true;
 	}						 
 	sevensegment_decode(cnt % 10); 
+}
+```
+
+
+
+## SysTick Function
+
+### SysTick_init()
+
+Initalization System Timer
+
+```c++
+void SysTick_init(uint32_t msec)
+```
+
+**Parameters**
+
+* **msec:**  SysTick interval
+
+**Example code**
+
+```c++
+void setup(void)
+{
+	RCC_PLL_init();
+	SysTick_init(1000);
+	sevensegment_init();
+}
+```
+
+
+
+### delay_ms()
+
+Stop code moving
+
+```c++
+void delay_ms(uint32_t msec)
+```
+
+**Parameters**
+
+* **msec:**  delay time
+
+
+
+### SysTick_reset()
+
+Reset current value to zero
+
+```c++
+void SysTick_reset();
+```
+
+
+
+### SysTick_val()
+
+Return system timer current value 
+
+```c++
+uint32_t SysTick_val();
+```
+
+
+
+**Example code**
+
+```c++
+while(1){
+	sevensegment_decode(count);
+	delay_ms(1000);
+	count++;
+	if (count > 9) count =0;
+	SysTick_reset();
+}
+```
+
+
+
+### SysTick_enable()
+
+Start SysTick Timer
+
+```c++
+void SysTick_enable();
+```
+
+
+
+### SysTick_disable()
+
+Disable SysTick Timer
+
+```c++
+void SysTick_disable();
+```
+
+
+
+**Example code**
+
+```c++
+SysTick_disable ();
+// Select processor clock
+// 1 = processor clock;  0 = external clock
+SysTick->CTRL |= 1UL<<2U;
+
+// SysTick Current Value Register
+SysTick->VAL = 0;
+
+// Enables SysTick exception request
+// 1 = counting down to zero asserts the SysTick exception request
+SysTick->CTRL |= 1UL<<1U;
+	
+// Enable SysTick IRQ and SysTick Timer
+SysTick_enable();
+```
+
+
+
+## EXTI Function
+
+### EXTI_init()
+
+Initalization EXTI registor setting
+
+```c++
+void EXTI_init(GPIO_TypeDef *port, int pin, int trig_type, int priority);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+* **pin**:  pin number (int) 0~15
+* **trig_type**:   FALL (0), RISE (1),  BOTH (2)
+* **priority**:  0 to 59
+
+**Example code**
+
+```c++
+void setup(void)
+{
+	RCC_PLL_init();
+	SysTick_init(1000);
+	sevensegment_init();
+}
+```
+
+
+
+### EXTI_enable()
+
+Enable EXTI
+
+```c++
+void EXTI_enable(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin**:  pin number (int) 0~15
+
+
+
+### EXTI_disable()
+
+Disable EXTI
+
+```c++
+void EXTI_disable(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin**:  pin number (int) 0~15
+
+
+
+### is_pending_EXTI()
+
+Make pending register
+
+```c++
+uint32_t is_pending_EXTI(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin**:  pin number (int) 0~15
+
+
+
+### clear_pending_EXTI()
+
+Clear pending register
+
+```c++
+void clear_pending_EXTI(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin**:  pin number (int) 0~15
+
+
+
+**Example code**
+
+```c++
+if (is_pending_EXTI(BUTTON_PIN)) {
+	LED_toggle();
+	clear_pending_EXTI(BUTTON_PIN); // cleared by writing '1'
 }
 ```
 
