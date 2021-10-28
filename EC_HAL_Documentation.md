@@ -516,3 +516,214 @@ if (is_pending_EXTI(BUTTON_PIN)) {
 }
 ```
 
+
+
+## TIMER Function
+
+### TIM_init()
+
+Initalization TIMER setting
+
+```c++
+void TIM_init(TIM_TypeDef* timerx, uint32_t msec);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+* **msec**:  Time to make period
+
+**Example code**
+
+```c++
+void TIM_INT_init(TIM_TypeDef* timerx, uint32_t msec){
+// 1. Initialize Timer	
+	TIM_init(timerx,msec);
+	
+// 2. Enable Update Interrupt
+	uint32_t IRQn_reg =0;
+	if(timerx ==TIM1)       IRQn_reg = TIM1_UP_TIM10_IRQn;
+    
+    NVIC_EnableIRQ(IRQn_reg);				
+	NVIC_SetPriority(IRQn_reg,2);
+}
+```
+
+
+
+### TIM_period_us()
+
+Set the timer cycle in us units.
+
+```c++
+void TIM_period_us(TIM_TypeDef *TIMx, uint32_t usec);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+* **msec**:  Time to make period in us
+
+
+
+### TIM_period_ms()
+
+Set the timer cycle in ms units.
+
+```c++
+void TIM_period_ms(TIM_TypeDef *TIMx, uint32_t msec);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+* **msec**:  Time to make period in ms
+
+
+
+### TIM_INT_init()
+
+Update event interrupt
+
+```c++
+void TIM_INT_init(TIM_TypeDef* timerx, uint32_t msec);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+* **msec**:  Time to make period
+
+
+
+### TIM_INT_enable();
+
+Enable Timer update interrupt
+
+```c++
+void TIM_INT_enable(TIM_TypeDef* timerx);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+
+
+
+### TIM_INT_disable();
+
+Enable Timer update interrupt
+
+```c++
+void TIM_INT_disable(TIM_TypeDef* timerx);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+
+
+
+### is_UIF();
+
+Update interrupt flag pended
+
+```c++
+uint32_t is_UIF(TIM_TypeDef *TIMx);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+
+
+
+### clear_UIF();
+
+Clear update interrupt flag
+
+```c++
+void clear_UIF(TIM_TypeDef *TIMx);
+```
+
+**Parameters**
+
+* **timerx**  Timer Number,  TIM1~TIM11
+
+
+
+## PWM Function
+
+### PWM_init()
+
+Initalization PWM out setting
+
+```c++
+void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin);
+```
+
+**Parameters**
+
+* **pwm**:  PWM variable
+* **Port:**  Port Number,  GPIOA~GPIOH
+* **pin**:  pin number (int) 0~15
+
+
+
+### PWM_period_us()
+
+Set the PWM period in us units.
+
+```c++
+void PWM_period_us(PWM_t *PWM_pin, uint32_t usec);
+```
+
+**Parameters**
+
+* **pwm**:  PWM variable
+* **usec**:  Time to make period
+
+
+
+### PWM_period_ms()
+
+Set the PWM period in ms units.
+
+```c++
+void PWM_period_ms(PWM_t *PWM_pin, uint32_t msec);
+```
+
+**Parameters**
+
+* **pwm**:  PWM variable
+* **msec**:  Time to make period
+
+
+
+### PWM_pulsewidth_ms()
+
+Set the PWM pulse width
+
+```c++
+void PWM_pulsewidth_ms(PWM_t *pwm, float pulse_width_ms);
+```
+
+**Parameters**
+
+* **pwm**:  PWM variable
+* **pulse_width_ms**:  pulse width want to make
+
+
+
+### PWM_duty()
+
+Set the PWM duty
+
+```c++
+void PWM_duty(PWM_t *pwm, float duty)
+```
+
+**Parameters**
+
+* **pwm**:  PWM variable
+* **duty**:  duty want to make
