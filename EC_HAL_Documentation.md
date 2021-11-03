@@ -18,6 +18,8 @@ MCU:  				STM32F411RE, Nucleo-64
 
 
 
+![image-20211029143156542](C:\Users\sktgt\AppData\Roaming\Typora\typora-user-images\image-20211029143156542.png)
+
 
 
 ## GPIO Digital In/Out 
@@ -727,3 +729,61 @@ void PWM_duty(PWM_t *pwm, float duty)
 
 * **pwm**:  PWM variable
 * **duty**:  duty want to make
+
+
+
+## Stepper Motor Function
+
+### Stepper_init()
+
+Initalization 4 pin using at stepper motor
+
+```c++
+void Stepper_init(GPIO_TypeDef* port1, int pin1, GPIO_TypeDef* port2, int pin2, GPIO_TypeDef* port3, int pin3, GPIO_TypeDef* port4, int pin4);
+```
+
+**Parameters**
+
+* **Port:**  Port Number,  GPIOA~GPIOH
+* **pin**:  pin number (int) 0~15
+
+
+
+### Stepper_setSpeed()
+
+Convert rpm to milli sec, set Time delay between each step
+
+```c++
+void Stepper_setSpeed (long whatSpeed);
+```
+
+**Parameters**
+
+* **whatSpeed:** Speed that we want to run motor
+
+
+
+### Stepper_step()
+
+run for n Step
+
+```c++
+void Stepper_step(int steps, int direction,int mode);
+```
+
+**Parameters**
+
+* **steps:**  total number of steps of the motor we want to spin.
+* **direction**:  run motor CW/CCW  (0: CCW, 1: CW)
+* **mode**:  FULL: Full stepping sequence, HALF: half stepping sequence
+
+
+
+### Stepper_step()
+
+Stop the stepper motor
+
+```c++
+void Stepper_stop (void);
+```
+
